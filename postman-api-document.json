@@ -129,12 +129,12 @@
 	"variable": [
 		{
 			"key": "url",
-			"value": "http://localhost:3005",
+			"value": "https://afternoon-sierra-66202.herokuapp.com/",
 			"type": "string"
 		},
 		{
 			"key": "uuid",
-			"value": "e4600aba-d0ce-4a25-bca1-b0d6166dd146",
+			"value": "",
 			"type": "string"
 		}
 	]
