@@ -129,7 +129,7 @@
 	"variable": [
 		{
 			"key": "url",
-			"value": "https://afternoon-sierra-66202.herokuapp.com/",
+			"value": "https://afternoon-sierra-66202.herokuapp.com",
 			"type": "string"
 		},
 		{
