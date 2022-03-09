@@ -7,7 +7,7 @@ const headers = {
 
 /* 參數格式
   options = {
-    require
+    request
     response
     statusCode
     [content] optional
@@ -17,7 +17,7 @@ const headers = {
 
 // 成功 || 失敗 送資料
 function sendNEnd (options) {
-  console.log(options.statusCode, options.require.url, options.content)
+  console.log(options.statusCode, options.request.url, options.content)
   const isSuccess = options.statusCode===200;
   options.response.writeHead(options.statusCode || 400, headers);
   if(options.content) {

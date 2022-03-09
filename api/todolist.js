@@ -1,26 +1,26 @@
-const { v4: uuidv4 } = require('uuid');
-const  { sendNEnd, contentWrap, tryCatchWrap } =  require('./common');
+const { v4: uuidv4 } = request('uuid');
+const  { sendNEnd, contentWrap, tryCatchWrap } =  request('./common');
 
 const todos = [{id:uuidv4(), title: '今天要做什麼'}];
 
-function todoList(require, response) {
+function todoList(request, response) {
   let body = '';
-  require.on('data', chunk => body += chunk);
-  let options = { require, response, statusCode:200};
-  const uuid = require.url.split('/').pop();
+  request.on('data', chunk => body += chunk);
+  let options = { request, response, statusCode:200};
+  const uuid = request.url.split('/').pop();
   const idx = todos.findIndex(item => item.id === uuid);
-  if(require.url === '/todos'){  // 絕對等於
-    switch (require.method) {
+  if(request.url === '/todos'){  // 絕對等於
+    switch (request.method) {
       case 'OPTIONS': sendNEnd(options);
         break;
       case 'GET':  contentWrap(options,todos);
         break;
       case 'POST': 
-        require.on('end',() => {
+        request.on('end',() => {
           tryCatchWrap(options, ()=>{
-            const result = JSON.parse(body);
-            if(result.title) {
-              todos.push({...result, id: uuidv4()})
+            const res = JSON.parse(body);
+            if(res.title) {
+              todos.push({...res, id: uuidv4()})
               contentWrap(options,todos);
             }
             else {  contentWrap(options,'title必要', 400); }
@@ -35,14 +35,14 @@ function todoList(require, response) {
         break;
     }
   }
-  else if(require.url.startsWith('/todos/')){ // 曖昧符合
-    switch (require.method) {
+  else if(request.url.startsWith('/todos/')){ // 曖昧符合
+    switch (request.method) {
       case 'PATCH': 
-        require.on('end',() => {
+        request.on('end',() => {
           tryCatchWrap(options, ()=>{
-            const result = JSON.parse(body);
+            const res = JSON.parse(body);
             if(idx !== -1){
-              todos[idx] = {...result, id: uuid};
+              todos[idx] = {...res, id: uuid};
               contentWrap(options,todos);
             }
             else{  contentWrap(options,'查無此項',400); }

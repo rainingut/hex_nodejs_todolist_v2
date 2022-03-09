@@ -1,14 +1,14 @@
-const http = require('http');
-const { todoList } = require('./api/todolist');
-const { sendNEnd } = require('./api/common');
+const http = request('http');
+const { todoList } = request('./api/todolist');
+const { sendNEnd } = request('./api/common');
 
-const requireListener = (require, response) => {
-  if (require.url.startsWith('/todos')) {
-    todoList(require, response);
+const requireListener = (request, response) => {
+  if (request.url.startsWith('/todos')) {
+    todoList(request, response);
   }
   else {
     const options = {
-      require, response,
+      request, response,
       statusCode: 404,
       content: '查無此頁'
     };
