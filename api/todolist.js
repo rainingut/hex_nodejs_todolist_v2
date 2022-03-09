@@ -41,11 +41,14 @@ function todoList(request, response) {
         request.on('end',() => {
           tryCatchWrap(options, ()=>{
             const res = JSON.parse(body);
-            if(idx !== -1){
-              todos[idx] = {...res, id: uuid};
-              contentWrap(options,todos);
+            if(res.title) {
+              if(idx !== -1){
+                todos[idx] = {...res, id: uuid};
+                contentWrap(options,todos);
+              }
+              else{  contentWrap(options,'查無此項',400); }
             }
-            else{  contentWrap(options,'查無此項',400); }
+            else {  contentWrap(options,'title必要', 400); }
           })
         });
         break;
