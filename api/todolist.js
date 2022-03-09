@@ -1,5 +1,5 @@
-const { v4: uuidv4 } = request('uuid');
-const  { sendNEnd, contentWrap, tryCatchWrap } =  request('./common');
+const { v4: uuidv4 } = require('uuid');
+const  { sendNEnd, contentWrap, tryCatchWrap } =  require('./common');
 
 const todos = [{id:uuidv4(), title: '今天要做什麼'}];
 

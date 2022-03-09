@@ -1,6 +1,6 @@
-const http = request('http');
-const { todoList } = request('./api/todolist');
-const { sendNEnd } = request('./api/common');
+const http = require('http');
+const { todoList } = require('./api/todolist');
+const { sendNEnd } = require('./api/common');
 
 const requireListener = (request, response) => {
   if (request.url.startsWith('/todos')) {
