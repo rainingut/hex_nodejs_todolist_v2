@@ -5,49 +5,45 @@ const headers = {
   'Content-Type':'application/json',
 };
 
-/* 參數格式
-  options = {
-    request
-    response
-    statusCode
-    [content] optional
+
+function successHandler (response, data=null) {
+  response.writeHead(200, headers);
+  if(data) { response.write(JSON.stringify({
+    status: 'success',
+    ...data
+  })) }
+  response.end();
+}
+
+
+function errorHandler(response, statusCode, data=null){
+  response.writeHead(statusCode, headers);
+  if(data) { response.write(JSON.stringify({
+    status: 'failed',
+    ...data
+  })) }
+  response.end();
+}
+
+
+function tryCatchHandler(response, cond, message=null) {
+  try {
+    cond();
   }
-*/
-
-
-// 成功 || 失敗 送資料
-function sendNEnd (options) {
-  const isSuccess = options.statusCode===200;
-  options.response.writeHead(options.statusCode || 400, headers);
-  if(options.content) {
-    options.response.write(JSON.stringify({
-      status: isSuccess ? 'success' : 'failure',
-      [isSuccess?'data':'message']: options.content,
-    }));
+  catch(error){
+    response.writeHead(400, headers)
+   response.write(JSON.stringify({
+     staus: 'failed',
+     message: message || '格式錯誤',
+   }));
+   response.end(); 
   }
-  options.response.end();
 }
-
-
-// 使用 sendNEnd  ( 因為要一直寫三行，所以包起來-- )
-function contentWrap (options, content=null, statusCode=200) {
-  options.statusCode = statusCode;
-  options.content = content;
-  sendNEnd(options);
-}
-
-
-// try catch 專用 😂「codition」是一個函式
-function tryCatchWrap(options, condition) {
-  try {  condition(); } 
-  catch{ contentWrap(options,'格式錯誤', 400); }
-}
-
 
 
 module.exports = {
   headers,
-  sendNEnd,
-  contentWrap,
-  tryCatchWrap,
+  successHandler,
+  errorHandler,
+  tryCatchHandler,
 }

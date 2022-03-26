@@ -1,18 +1,13 @@
-const http = require('http');
-const { todoList } = require('./api/todolist');
-const { sendNEnd } = require('./api/common');
+const http = require( 'http');
+const  { errorHandler } = require ('./api/common');
+const  { todoList } = require ('./api/todolist');
 
-const requireListener = (request, response) => {
+const requireListener = ( request, response ) => {
   if (request.url.startsWith('/todos')) {
     todoList(request, response);
   }
   else {
-    const options = {
-      request, response,
-      statusCode: 404,
-      content: '查無此頁'
-    };
-    sendNEnd(options);
+    errorHandler(response, 404, { message: '查無此頁🐇' });
   }
 }
 
